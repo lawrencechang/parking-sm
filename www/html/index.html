@@ -10,7 +10,7 @@ s -->
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>More Touching</title>
+    <title>LA Street Park - Demo</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -48,7 +48,7 @@ a-expanded="false" aria-controls="navbar">
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href=".">Map</a></li>
-	    <li><a href="about.html">About</a></li>
+            <li><a href="about.html">About</a></li>
             <li><a href="contact.html">Contact</a></li>
           </ul>
         </div><!--/.nav-collapse -->
@@ -210,15 +210,12 @@ a-expanded="false" aria-controls="navbar">
         $(function() {
           var myMap = new MapsLib({
             fusionTableId1:      "1K-0-0J0SFskocbHrhmP4oZ8oic0DPnW0BhJXeeRL", // smparkingt1
-            //fusionTableId2:      "1kH2JHxUn6tllv2mEP8KPiJoQsdBJsSY2mVhEYDIv", // smparkingt2
             fusionTableId2:      "1djAgQ9lSwP21nDE1MQSWiLu1E3scwkNUtLLJTJFH", // merged
             googleApiKey:       "AIzaSyBxJ_Fok5agsqPeuOenXEoySqxmG0S_zco",
             locationColumn:     "latitude",
             map_center:         [34.022268, -118.48344],
             locationScope:      ""
           });
-          // smparkingt2
-          // 1kH2JHxUn6tllv2mEP8KPiJoQsdBJsSY2mVhEYDIv
 
           var autocomplete = new google.maps.places.Autocomplete(document.getElementById('search_address'));
       
