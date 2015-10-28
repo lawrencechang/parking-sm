@@ -299,11 +299,13 @@
 
         startFieldName = "'start'";
         endFieldName = "'end'";
+        noparkingFieldName = "'noparking'";
 
         if (!(hour == "" || minute == "" || period == "")) {
             self.whereClause += " AND " + 
             startFieldName + "<=" + fieldName + " AND " + 
-            endFieldName + ">=" + fieldName;
+            endFieldName + ">=" + fieldName + " AND " +
+            noparkingFieldName + "='True'";
         }
 
         console.log("Table 2 whereClause: "+self.whereClause);

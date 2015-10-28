@@ -203,8 +203,9 @@ def run(locations):
 	flatten(locations);
 
 # Create two separate structures, which will be turned into two tables.
-# A hopeful implementation that'll allow us to display both the green
-# and red markers.
+# firstTable contains all points (locations)
+# secondTable contains all rules. This table has more entries than firstTable.
+# 
 def runTwoTables(locations):
 	addStartEnd(locations);
 
@@ -243,6 +244,10 @@ def runTwoTables(locations):
 			secondTable[index]['start'] = getTimeInInt(rule['start']);
 			secondTable[index]['end'] = getTimeInInt(rule['end']);
 			secondTable[index]['rule'] = rule['description'];
+			noParking = 'False';
+			if rule['noparking'] == 'True' or rule['nostopping'] == 'True':
+				noParking = 'True';
+			secondTable[index]['noparking'] = noParking;
 			index = index + 1;
 	
 	return (firstTable,secondTable);

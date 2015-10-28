@@ -58,3 +58,5 @@ target/
 
 # My own
 data
+.DS_Store
+bootstrap

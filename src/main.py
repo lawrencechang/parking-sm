@@ -81,6 +81,10 @@ def main():
 	return (firstTable,secondTable);
 (firstTable,secondTable) = main();
 
+# For console 
+import utilities.tableUtility as tu;
+import pprint;
+
 '''
 # Extra info
 import pprint;
