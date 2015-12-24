@@ -1,13 +1,14 @@
 '''
 uniqueLatLong.py
 
-We are verifying whether multiple signs exist at the same "location".
+Utility to process multiple signs exist at the same "location".
 Location in quotes because even if signs are colocated, there is no
 guarantee that the data conveys that with identical lat long values.
 
-To mitigate this, I arbitrarily said that a 10 foot radius is our
+To mitigate this, perhaps use a 10 foot radius as our
 cluster size of a location. That is, if two signs are within 10 feet
 of each other, they are considered colocated. Why 10 feet?
+
 1. 10 feet seems like more than enough wiggle room in terms of data
 entry of lat long coordinates.
 2. I don't expect street signs to be closer than 10 feet from each
@@ -17,6 +18,9 @@ Caveats:
 1. How do I deal with a sign that is within the radius of two separate
 signs?
 2. How do I get these clusters?
+3. What if in a series of signs, each pair of signs is within 10 feet.
+So from sign 1 to sign 2, 8 feet. But from sign 2 to sign 3, 7 feet.
+And from sign 1 to sign 3, 15 feet. How do we deal with this?
 '''
 
 import geojson;

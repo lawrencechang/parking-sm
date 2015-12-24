@@ -32,7 +32,7 @@ def textProcess(geoJsonObject):
 def uniqueLocations(geoJsonObject):
 	print "Unique locations step.";
 	start = time.time();
-	import utilities.uniqueLatLong as unique;
+	import uniqueLatLong as unique;
 	(timeElapsed,locations) = unique.getUniqueLocations(geoJsonObject);
 	end = time.time();
 	print "["+str(end-start)+" seconds]";
@@ -46,21 +46,39 @@ def languageProcess(locations):
 	end = time.time();
 	print "["+str(end-start)+" seconds]";
 
-def timeSlotProcess(locations):
-	print "Time slot process step.";
+def timeSlotProcessSeparate(locations):
+	print "Time slot process \"separate\" step.";
 	start = time.time();
 	import timeSlotProcess;
-	#timeSlotProcess.run(locations);
 	(firstTable,secondTable) = timeSlotProcess.runTwoTables(locations);
 	end = time.time();
 	print "["+str(end-start)+" seconds]";
 	return (firstTable,secondTable);
 
-def makeCSV(locations,dataDir,filename):
-	print "Making CSV for Google Fusion Tables.";
+# Not a good function?? Changes input var, instead of returning new var?
+def timeSlotProcessSingle(locations):
+	print "Time slot process \"single\" step.";
 	start = time.time();
-	import makeCSV;
-	makeCSV.run(locations,dataDir,filename);
+	import timeSlotProcess;
+	#flattened = timeSlotProcess.runFlatten(locations);
+	flattened = timeSlotProcess.runFlattenSmall(locations);
+	end = time.time();
+	print "["+str(end-start)+" seconds]";
+	return flattened;
+
+def writeCSV(dictObject,dataDir,filename):
+	print "Outputting to CSV file.";
+	start = time.time();
+	import fileWriter;
+	fileWriter.runCSV(dictObject,dataDir,filename);
+	end = time.time();
+	print "["+str(end-start)+" seconds]";
+
+def writeJSON(dictObject,dataDir,filename):
+	print "Outputting to JSON file.";
+	start = time.time();
+	import fileWriter;
+	fileWriter.runJSON(dictObject,dataDir,filename);
 	end = time.time();
 	print "["+str(end-start)+" seconds]";
 
@@ -69,17 +87,25 @@ def main():
 	geoJsonFilename = "signs_parking.geojson";
 	t1csvFilename = "signs_parking_table1.csv";
 	t2csvFilename = "signs_parking_table2.csv";
+	t1jsonFilename = "signs_parking_table1.json";
+	t2jsonFilename = "signs_parking_table2.json";
+	flattenedFilename = "signs_locations.json";
 
 	geoJsonObject = geojson.load(open(dataDir+geoJsonFilename,'r'));
 	textProcess(geoJsonObject);
 	locations = uniqueLocations(geoJsonObject);
 	languageProcess(locations);
-	(firstTable,secondTable) = timeSlotProcess(locations);
-	makeCSV(firstTable,dataDir,t1csvFilename);
-	makeCSV(secondTable,dataDir,t2csvFilename);
+	(firstTable,secondTable) = timeSlotProcessSeparate(locations);
+	flattened = timeSlotProcessSingle(locations);
+	writeCSV(firstTable,dataDir,t1csvFilename);
+	writeCSV(secondTable,dataDir,t2csvFilename);
+	writeJSON(firstTable,dataDir,t1jsonFilename);
+	writeJSON(secondTable,dataDir,t2jsonFilename);
+	writeJSON(flattened,dataDir,flattenedFilename);
 
-	return (firstTable,secondTable);
-(firstTable,secondTable) = main();
+	return (firstTable,secondTable,flattened);
+
+(firstTable,secondTable,flattened) = main();
 
 # For console 
 import utilities.tableUtility as tu;

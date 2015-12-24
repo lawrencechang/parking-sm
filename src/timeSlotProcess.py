@@ -140,6 +140,21 @@ def addTimeSlots(locations):
 					if timeSlotInRange(timeSlot,rule['times']):
 						rule[timeSlot] = 'False';
 
+def addTimeSlotsSmall(locations):
+	timeSlots = getTimeSlotList();
+	counter = 0;
+	for key,value in locations.iteritems():
+		#print "In addTimeSlots: "+str(counter);
+		counter = counter + 1;
+		for rule in value['rules']:
+			for timeSlot in timeSlots:
+				rule[timeSlot] = 'T';
+				if (rule['noparking'] == 'True' or 
+					rule['nostopping'] == 'True'):
+					if timeSlotInRange(timeSlot,rule['times']):
+						#print "Found a false in addTimeSlotsSmall - "+str(rule["objectid"]);
+						rule[timeSlot] = 'F';
+
 # returns time in a integer
 # 12am = 0000
 # 9am = 900
@@ -186,21 +201,74 @@ def flatten(locations):
 	days = getDaysList();
 	timeSlots = getTimeSlotList();
 
-	#counter = 0;
+	counter = 0;
 	for latlong,location in locations.iteritems():
 		#print "In flatten: "+str(counter);
-		#counter = counter + 1;
+		counter = counter + 1;
 		for day in days:
 			for timeSlot in timeSlots:
 				fieldName = day+timeSlot;
 				location[fieldName] = 'True';
 				for rule in location['rules']:
 					if rule[day] == 'True' and rule[timeSlot] == 'False':
+						print "Found a false in flatten - "+str(rule["objectid"]);
 						location[fieldName] = 'False';
 
-def run(locations):
+def removeRulesField(locations):
+	result = {};
+	for latlong,entry in locations.iteritems():
+		result[latlong] = {};
+		for key,value in entry.iteritems():
+			if key == 'rules':
+				continue;
+			else:
+				result[latlong][key] = value;
+	return result;
+
+def flattenSmall(locations):
+	days = getDaysList();
+	timeSlots = getTimeSlotList();
+
+	counter = 0;
+	for latlong,location in locations.iteritems():
+		#print "In flatten: "+str(counter);
+		counter = counter + 1;
+		for day in days:
+			for timeSlot in timeSlots:
+				fieldName = day+timeSlot;
+				location[fieldName] = 'T';
+				#print "flattenSmall - got inside timeSlots loop.";
+				for rule in location['rules']:
+					if rule[day] == 'True' and rule[timeSlot] == 'F':
+						#print "Found a false in flattenSmall - "+str(rule["objectid"]);
+						location[fieldName] = 'F';
+
+def moveLatLongFromKeyToValues(locations):
+	table = {};
+	for (latitude,longitude),values in locations.iteritems():
+		index = str(values['id']);
+		table[index] = {};
+		table[index]['latitude'] = latitude;
+		table[index]['longitude'] = longitude;
+		for valueKey,valueValue in values.iteritems():
+			table[index][valueKey] = valueValue;
+	return table;
+
+def runFlatten(locations):
 	addTimeSlots(locations);
 	flatten(locations);
+	table = moveLatLongFromKeyToValues(locations);
+	return table;
+
+def runFlattenSmall(locations):
+	print "In runFlattenSmall.";
+	addTimeSlotsSmall(locations);
+	print "flattenSmall";
+	flattenSmall(locations);
+	print "removed";
+	removed = removeRulesField(locations);
+	table = moveLatLongFromKeyToValues(removed);
+	return table;
 
 # Create two separate structures, which will be turned into two tables.
 # firstTable contains all points (locations)

@@ -6,7 +6,7 @@ Heavily adopted from "jsonHelper.py" from previous codebase.
 
 '''
 
-def run(locations,fileDir,filename):
+def runCSV(locations,fileDir,filename):
 	import csv;
 	csvFile = csv.writer(open(fileDir+filename,'w'));
 
@@ -26,3 +26,13 @@ def run(locations,fileDir,filename):
 		for fieldname in fieldnames:
 			valuesList.append(values[fieldname]);
 		csvFile.writerow(valuesList);
+
+def runJSON(locations,fileDir,filename):
+	import json;
+	outputFile = open(fileDir+filename,'w');
+	try:
+		temp = json.dumps(locations);
+	except:
+		print "locations variable isn't json outputtable.";
+		raise;
+	json.dump(locations,outputFile);
