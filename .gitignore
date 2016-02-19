@@ -60,4 +60,7 @@ target/
 data
 .DS_Store
 bootstrap
-images/*
+www/html/images/*
+
+# emacs
+*~
