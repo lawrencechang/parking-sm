@@ -171,6 +171,7 @@
 
     MapsLib.prototype.getgeoCondition = function (address, callback) {
         var self = this;
+        /*
         if (address !== "") {
             if (address.toLowerCase().indexOf(self.locationScope) === -1) {
                 address = address + " " + self.locationScope;
@@ -220,6 +221,8 @@
         } else {
             callback('');
         }
+        */
+        callback('');
     };
 
     // 
@@ -232,10 +235,12 @@
 
         // Table 1
         console.log("Table 1 whereClause: "+self.whereClause);
+        /**/
         self.getgeoCondition(address, function (geoCondition) {
             self.whereClause += geoCondition;
             self.submitSearch(self.fusionTableId1, self.whereClause, self.map);
         });
+        /**/
 
         // Table 2
         self.whereClause = self.locationColumn + " not equal to ''";
