@@ -61,6 +61,7 @@ data
 .DS_Store
 bootstrap
 www/html/images/*
+*.sqlite3
 
 # emacs
 *~

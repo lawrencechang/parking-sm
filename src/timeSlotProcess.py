@@ -211,7 +211,7 @@ def flatten(locations):
 				location[fieldName] = 'True';
 				for rule in location['rules']:
 					if rule[day] == 'True' and rule[timeSlot] == 'False':
-						print "Found a false in flatten - "+str(rule["objectid"]);
+						#print "Found a false in flatten - "+str(rule["objectid"]);
 						location[fieldName] = 'False';
 
 def removeRulesField(locations):
@@ -242,6 +242,17 @@ def flattenSmall(locations):
 					if rule[day] == 'True' and rule[timeSlot] == 'F':
 						#print "Found a false in flattenSmall - "+str(rule["objectid"]);
 						location[fieldName] = 'F';
+		# Add rules in easy-to-read "descriptions" field
+		location['description'] = ""
+		for rule in location['rules']:
+			currentDesc = location['description']
+			'''
+			if currentDesc == "":
+				pass
+			else:
+				currentDesc = currentDesc + ", "
+			'''
+			location['description'] = currentDesc + rule['description'] + ", "
 
 def moveLatLongFromKeyToValues(locations):
 	table = {};
@@ -265,8 +276,9 @@ def runFlattenSmall(locations):
 	addTimeSlotsSmall(locations);
 	print "flattenSmall";
 	flattenSmall(locations);
-	print "removed";
-	removed = removeRulesField(locations);
+	#print "removed";
+	#removed = removeRulesField(locations);
+	removed = locations;
 	table = moveLatLongFromKeyToValues(removed);
 	return table;
 
